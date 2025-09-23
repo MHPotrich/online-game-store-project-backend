@@ -38,4 +38,20 @@ public class Game {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+	
+	public void load(DataBase dataBase) {
+		
+	}
+	
+	public void save(DataBase dataBase) {
+		
+	}
+	
+	public void update(DataBase dataBase) {
+		
+	}
+	
+	public void delete(DataBase dataBase) {
+		
+	}
 }

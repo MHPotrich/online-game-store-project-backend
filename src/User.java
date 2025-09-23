@@ -10,6 +10,8 @@ public class User {
 	private int wallet = 0;
 	private int points = 0;
 	private LocalDateTime creationDate;
+	private String password;
+	private String email;
 	
 	User(String p_firstName, String p_lastName) {
 		this.id = java.util.UUID.randomUUID();
@@ -46,5 +48,37 @@ public class User {
 
 	public LocalDateTime getCreationDate() {
 		return creationDate;
+	}
+	
+	public void load(DataBase dataBase) {
+		
+	}
+	
+	public void save(DataBase dataBase) {
+		
+	}
+	
+	public void update(DataBase dataBase) {
+		
+	}
+	
+	public void delete(DataBase dataBase) {
+		
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

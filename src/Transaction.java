@@ -70,4 +70,20 @@ public class Transaction {
 	public LocalDateTime getCreationDate() {
 		return creationDate;
 	}
+	
+	public void load(DataBase dataBase) {
+		
+	}
+	
+	public void save(DataBase dataBase) {
+		
+	}
+	
+	public void update(DataBase dataBase) {
+		
+	}
+	
+	public void delete(DataBase dataBase) {
+		
+	}
 }
