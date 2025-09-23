@@ -4,11 +4,7 @@ public class DataBase {
 	private Connection connection;
 	private Statement statement;
 	
-	DataBase() {
-		String url = "";
-		String username = "";
-		String password = "";
-		
+	DataBase(String url, String username, String password) {
 		try {
 			this.connection = DriverManager.getConnection(url, username, password);
 			this.statement = this.connection.createStatement();
