@@ -2,7 +2,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Transaction {
+public class Order {
 	private class Item {
 		private String name;
 		private int price = 0;
@@ -27,8 +27,9 @@ public class Transaction {
 	private boolean isCompleted = false;
 	private ArrayList<Item> items;
 	private LocalDateTime creationDate;
+	private Payment payment;
 	
-	Transaction(User p_user) {
+	Order(User p_user) {
 		this.id = java.util.UUID.randomUUID();
 		this.user = p_user;
 		this.creationDate = LocalDateTime.now();
@@ -84,6 +85,10 @@ public class Transaction {
 	}
 	
 	public void delete(DataBase dataBase) {
+		
+	}
+	
+	public void close() {
 		
 	}
 }
