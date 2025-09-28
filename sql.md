@@ -30,7 +30,7 @@ CREATE TABLE user_games (
 
 CREATE TABLE order (
 	id UUID NOT NULL PRIMARY KEY,
-	name VARCHAR(50) NOT NULL,'
+	name VARCHAR(50) NOT NULL,
 	price INT NOT NULL
 );
 
