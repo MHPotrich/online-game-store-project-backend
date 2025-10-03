@@ -60,7 +60,19 @@ public class Game {
 	}
 	
 	public void load(DataBase dataBase) {
+		String query = "SELECT * FROM games WHERE id = '" + this.id.toString() + "' LIMIT 1;";
+		ResultSet rawGame = dataBase.get(query);
 		
+		try {
+			this.id = UUID.fromString(rawGame.getString(1));
+			this.title = rawGame.getString(2);
+			this.coverImage = rawGame.getString(3);
+			this.listPrice = rawGame.getInt(4);
+			this.salePrice = rawGame.getInt(5);
+			this.isActive = rawGame.getBoolean(6);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void save(DataBase dataBase) {
@@ -85,7 +97,9 @@ public class Game {
 	}
 	
 	public void delete(DataBase dataBase) {
+		String query = "DELETE FROM games WHERE id = '" + this.id.toString() + "';";
 		
+		dataBase.update(query);
 	}
 	
 	public static ArrayList<Game> loadGames(DataBase dataBase, String targetProperty, String targetValue) {
