@@ -1,3 +1,4 @@
+package mainPackage;
 
 public class Payment {
 	private String fullName;

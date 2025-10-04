@@ -1,5 +1,9 @@
+package mainPackage;
 import java.util.ArrayList;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class Main {
 	public static void main(String[] args) {
 		String dbUrl = "jdbc:postgresql://localhost:5432/online-game-store-db";
@@ -25,6 +29,8 @@ public class Main {
 		ArrayList<Game> games = Game.loadGames(dataBase, "", "");
 		
 		System.out.println(games);
+		
+		SpringApplication.run(Main.class, args);
 		
 		dataBase.disconnect();
 	}
