@@ -1,6 +1,6 @@
 services:
 
-  db:
+  data-base:
     image: postgres
     restart: always
     shm_size: 128mb
@@ -11,8 +11,11 @@ services:
     ports:
       - 5432:5432
 
-  adminer:
-    image: adminer
+  pg-admin:
+    image: dpage/pgadmin4:snapshot
     restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
     ports:
-      - 8080:8080
+      - 3000:80
