@@ -11,6 +11,8 @@ public class Main {
 		String dbPassword = "admin";
 		DataBase dataBase = new DataBase(dbUrl, dbUsername, dbPassword);
 		
+		GameController.dataBase = dataBase;
+		
 		// import uuid
 		dataBase.execute("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");
 		
@@ -26,12 +28,10 @@ public class Main {
 		
 		testGame.save(dataBase);*/
 		
-		ArrayList<Game> games = Game.loadGames(dataBase, "", "");
-		
-		System.out.println(games);
+		// ArrayList<Game> games = Game.loadGames(dataBase, "", "");
 		
 		SpringApplication.run(Main.class, args);
 		
-		dataBase.disconnect();
+		//dataBase.disconnect();
 	}
 }

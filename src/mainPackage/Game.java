@@ -60,23 +60,25 @@ public class Game {
 		this.isActive = isActive;
 	}
 	
-	public void load(DataBase dataBase) {
-		String query = "SELECT * FROM games WHERE id = '" + this.id.toString() + "' LIMIT 1;";
-		ResultSet rawGame = dataBase.get(query);
+	public void load(DataBase p_dataBase, UUID p_id) {
+		String query = "SELECT * FROM games WHERE id = '" + p_id.toString() + "' LIMIT 1;";
+		ResultSet rawGame = p_dataBase.get(query);
 		
 		try {
-			this.id = UUID.fromString(rawGame.getString(1));
-			this.title = rawGame.getString(2);
-			this.coverImage = rawGame.getString(3);
-			this.listPrice = rawGame.getInt(4);
-			this.salePrice = rawGame.getInt(5);
-			this.isActive = rawGame.getBoolean(6);
+			while (rawGame.next()) {
+				this.id = UUID.fromString(rawGame.getString(1));
+				this.title = rawGame.getString(2);
+				this.coverImage = rawGame.getString(3);
+				this.listPrice = rawGame.getInt(4);
+				this.salePrice = rawGame.getInt(5);
+				this.isActive = rawGame.getBoolean(6);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void save(DataBase dataBase) {
+	public void save(DataBase p_dataBase) {
 		String query = "INSERT INTO games (id, title, cover_image, list_price, sale_price, is_active)";
 		
 		query = query + " VALUES (";
@@ -90,29 +92,29 @@ public class Game {
 		
 		//System.out.println(query);
 		
-		dataBase.execute(query);
+		p_dataBase.execute(query);
 	}
 	
-	public void update(DataBase dataBase) {
+	public void update(DataBase p_dataBase) {
 		
 	}
 	
-	public void delete(DataBase dataBase) {
+	public void delete(DataBase p_dataBase) {
 		String query = "DELETE FROM games WHERE id = '" + this.id.toString() + "';";
 		
-		dataBase.update(query);
+		p_dataBase.update(query);
 	}
 	
-	public static ArrayList<Game> loadGames(DataBase dataBase, String targetProperty, String targetValue) {
+	public static ArrayList<Game> loadGames(DataBase p_dataBase, String p_targetProperty, String p_targetValue) {
 		ResultSet rawGames;
 		String query = "SELECT * FROM Games";
 		ArrayList<Game> games = new ArrayList<Game>();
 		
-		if(targetProperty.isEmpty() == false && targetValue.isEmpty() == false) {
-			query = query + "WHERE " + targetProperty + " = " + targetValue + ";";
+		if(p_targetProperty.isEmpty() == false && p_targetValue.isEmpty() == false) {
+			query = query + "WHERE " + p_targetProperty + " = " + p_targetValue + ";";
 		}
 		
-		rawGames = dataBase.get(query);
+		rawGames = p_dataBase.get(query);
 		
 		try {
 			while (rawGames.next()) {
