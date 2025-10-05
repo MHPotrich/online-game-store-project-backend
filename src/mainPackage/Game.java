@@ -22,6 +22,10 @@ public class Game {
 		this.title = p_title;
 	}
 	
+	Game() {
+		this.id = java.util.UUID.randomUUID();
+	}
+	
 	public String getTitle() {
 		return title;
 	}
