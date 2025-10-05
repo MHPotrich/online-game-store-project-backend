@@ -1,4 +1,5 @@
 package mainPackage;
+
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -13,42 +14,42 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 
 @RestController
-@RequestMapping("/games")
-public class GameController {
+@RequestMapping("/users")
+public class UserController {
 	public static DataBase dataBase;
 	
 	@GetMapping("")
-	public String listGames() {
+	public String listUsers() {
 		Gson gson = new Gson();
-		ArrayList<Game> games = Game.loadGames(dataBase, "", "");
+		ArrayList<User> users = User.loadUsers(dataBase, "", "");
 		
-		return gson.toJson(games, ArrayList.class);
+		return gson.toJson(users, ArrayList.class);
 	}
 	
 	@GetMapping("/{id}")
-	public String getGame(@PathVariable("id") UUID p_id) {
+	public String getUser(@PathVariable("id") UUID p_id) {
 		Gson gson = new Gson();
-		Game game = new Game();
+		User user = new User();
 		
-		game.load(dataBase, p_id);
+		user.load(dataBase, p_id);
 		
-		return gson.toJson(game, Game.class);
+		return gson.toJson(user, User.class);
 	}
 	
 	@PostMapping("")
-	public String createGame(@RequestBody String p_body) {
-		Game newGame = new Gson().fromJson(p_body, Game.class);
+	public String createUser(@RequestBody String p_body) {
+		User newUser = new Gson().fromJson(p_body, User.class);
 		
-		newGame.save(dataBase);
+		newUser.save(dataBase);
 		
-		return new Gson().toJson(newGame, Game.class);
+		return new Gson().toJson(newUser, User.class);
 	}
 	
 	@DeleteMapping("/{id}")
-	public void deleteGame(@PathVariable("id") UUID p_id) {
-		Game game = new Game();
+	public void deleteUser(@PathVariable("id") UUID p_id) {
+		User user = new User();
 		
-		game.load(dataBase, p_id);
-		game.delete(dataBase);
+		user.load(dataBase, p_id);
+		user.delete(dataBase);
 	}
 }

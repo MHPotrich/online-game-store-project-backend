@@ -11,8 +11,9 @@ public class Main {
 		DataBase dataBase = new DataBase(dbUrl, dbUsername, dbPassword);
 		
 		GameController.dataBase = dataBase;
+		UserController.dataBase = dataBase;
 		
-		// import uuid
+		// import uuid inside postgresql
 		dataBase.execute("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");
 		
 		// create tables
