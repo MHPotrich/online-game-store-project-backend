@@ -1,7 +1,23 @@
-# online-game-store-project-backend
+# Online Game Store Project Backend
 
-## setup
+## Requirements
+- Docker
+- Java
+
+## Setup
 
 - build container command: ```docker compose up```
 - pgadmin server config:
+
 	- Host Name/Address: ```host.docker.internal```
+
+## Routes
+
+### Users
+- Get - `/users`
+- Post - `/users`
+- Get - `/users/<user-id>`
+### Games
+- Get - `/games`
+- Post - `/games`
+- Get - `/games/<game-id>`
