@@ -1,4 +1,4 @@
-package mainPackage;
+package dataBase;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,7 +9,7 @@ public class DataBase {
 	private Connection connection;
 	private Statement statement;
 	
-	DataBase(String url, String username, String password) {
+	public DataBase(String url, String username, String password) {
 		try {
 			this.connection = DriverManager.getConnection(url, username, password);
 			this.statement = this.connection.createStatement();

@@ -1,8 +1,10 @@
-package mainPackage;
+package product;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.UUID;
+
+import dataBase.DataBase;
 
 public class Game {
 	private UUID id;

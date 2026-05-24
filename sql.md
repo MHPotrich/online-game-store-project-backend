@@ -28,6 +28,19 @@ CREATE TABLE user_games (
 	PRIMARY KEY (user_id, game_id)
 );
 
+CREATE TABLE medias (
+	id UUID NOT NULL PRIMARY KEY,
+	url VARCHAR(200) NOT NULL,
+	type VARCHAR(5) NOT NULL,
+	alt VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE user_medias (
+	user_id UUID NOT NULL REFERENCES users(id),
+	media_id UUID NOT NULL REFERENCES medias(id),
+	PRIMARY KEY (user_id, media_id)
+);
+
 CREATE TABLE order (
 	id UUID NOT NULL PRIMARY KEY,
 	name VARCHAR(50) NOT NULL,

@@ -1,7 +1,11 @@
-package mainPackage;
+package order;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
+
+import dataBase.DataBase;
+import payment.Payment;
+import profile.User;
 
 public class Order {
 	private class Item {

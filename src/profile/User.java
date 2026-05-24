@@ -1,9 +1,12 @@
-package mainPackage;
+package profile;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
+
+import dataBase.DataBase;
+import product.Game;
 
 public class User {
 	private UUID id;
