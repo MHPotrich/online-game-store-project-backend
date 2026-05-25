@@ -3,6 +3,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import dataBase.DataBase;
+import media.MediaController;
+import order.OrderController;
 import product.GameController;
 import profile.UserController;
 
@@ -16,6 +18,8 @@ public class Main {
 		
 		GameController.dataBase = dataBase;
 		UserController.dataBase = dataBase;
+		MediaController.dataBase = dataBase;
+		OrderController.dataBase = dataBase;
 		
 		// import uuid inside postgresql
 		dataBase.execute("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");

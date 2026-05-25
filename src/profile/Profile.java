@@ -8,7 +8,7 @@ import java.util.UUID;
 import dataBase.DataBase;
 import product.Game;
 
-public class User {
+public class Profile {
 	private UUID id;
 	private String firstName;
 	private String lastName;
@@ -19,21 +19,21 @@ public class User {
 	private String password;
 	private String email;
 	
-	User(String p_firstName, String p_lastName) {
+	Profile(String p_firstName, String p_lastName) {
 		this.id = java.util.UUID.randomUUID();
 		this.firstName = p_firstName;
 		this.lastName = p_lastName;
 		this.creationDate = LocalDateTime.now();
 	}
 	
-	User(UUID p_id, String p_firstName, String p_lastName) {
+	Profile(UUID p_id, String p_firstName, String p_lastName) {
 		this.id = p_id;
 		this.firstName = p_firstName;
 		this.lastName = p_lastName;
 		this.creationDate = LocalDateTime.now();
 	}
 	
-	User() {
+	public Profile() {
 		this.id = java.util.UUID.randomUUID();
 		this.creationDate = LocalDateTime.now();
 	}
@@ -143,10 +143,10 @@ public class User {
 		this.creationDate = p_creationDate;
 	}
 	
-	public static ArrayList<User> loadUsers(DataBase p_dataBase, String p_targetProperty, String p_targetValue) {
+	public static ArrayList<Profile> loadUsers(DataBase p_dataBase, String p_targetProperty, String p_targetValue) {
 		ResultSet rawUsers;
 		String query = "SELECT * FROM users";
-		ArrayList<User> users = new ArrayList<User>();
+		ArrayList<Profile> users = new ArrayList<Profile>();
 		
 		if(p_targetProperty.isEmpty() == false && p_targetValue.isEmpty() == false) {
 			query = query + "WHERE " + p_targetProperty + " = " + p_targetValue + ";";
@@ -164,7 +164,7 @@ public class User {
 				String email = rawUsers.getString(6);
 				String password = rawUsers.getString(7);
 				LocalDateTime creationDate = LocalDateTime.parse(rawUsers.getString(8));
-				User user = new User(id, firstName, lastName);
+				Profile user = new Profile(id, firstName, lastName);
 				
 				user.setEmail(email);
 				user.setPassword(password);
