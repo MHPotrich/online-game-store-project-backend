@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 
 import dataBase.DataBase;
+import order.Order;
+import product.Game;
 
 @RestController
 @RequestMapping("/profiles")
@@ -53,5 +55,24 @@ public class UserController {
 		
 		user.load(dataBase, p_id);
 		user.delete(dataBase);
+	}
+	
+	@PostMapping("/{profile_id}/cart/{game_id}")
+	public String buy(@PathVariable("profile_id") UUID p_profile_id, @PathVariable("game_id") UUID p_game_id) {
+		Gson gson = new Gson();
+		Profile profile = new Profile();
+		Game game = new Game();
+		Order order = new Order(profile);
+		
+		profile.load(dataBase, p_profile_id);
+		game.load(dataBase, p_game_id);
+		
+		// TODO: authenticate user before continue
+		
+		order.addItem(game, game.getActivePrice());
+		
+		order.save(dataBase);
+		
+		return gson.toJson(order, Order.class);
 	}
 }

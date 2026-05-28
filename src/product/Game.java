@@ -24,7 +24,7 @@ public class Game {
 		this.title = p_title;
 	}
 	
-	Game() {
+	public Game() {
 		this.id = java.util.UUID.randomUUID();
 	}
 	

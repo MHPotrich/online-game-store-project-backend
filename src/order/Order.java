@@ -7,30 +7,47 @@ import java.util.UUID;
 
 import dataBase.DataBase;
 import payment.Payment;
+import product.Game;
 import profile.Profile;
 
 public class Order {
 	
 	// TODO: create data base table for order items
 	private class Item {
-		private String name;
+		private Integer id;
+		private Game game;
 		private int price = 0;
 		
-		Item(String p_name, int p_price) {
-			this.name = p_name;
+		Item(Game p_game, int p_price) {
+			this.game = p_game;
 			this.price = p_price;
 		}
 
-		public String getName() {
-			return name;
-		}
-
 		public int getPrice() {
-			return price;
+			return this.price;
 		}
 		
-		public void load() {
-			// TODO: load from the data base
+		public Game getGame() {
+			return this.game;
+		}
+		
+		public void load(DataBase p_dataBase, Integer p_orderId) {
+			String query = "SELECT * FROM order_items WHERE order_id = '" + p_orderId.toString() + "' LIMIT 1;";
+			ResultSet rawOrder = p_dataBase.get(query);
+			
+			try {
+				while (rawOrder.next()) {
+					Game game = new Game();
+					
+					game.load(p_dataBase, UUID.fromString(rawOrder.getString(2)));
+					
+					this.id = rawOrder.getInt(1);
+					this.game = game;
+					this.price = rawOrder.getInt(3);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		public void save() {
@@ -40,30 +57,39 @@ public class Order {
 		public void update() {
 			// TODO: update existing item in the data base
 		}
+		
+		public void delete(DataBase p_dataBase) {
+			String queryItem = "DELETE FROM order_item WHERE id = " + this.id.toString() + ";";
+			String queryItemRelation = "DELETE FROM order_items WHERE item_id = " + this.id.toString() + ";";
+			
+			
+			p_dataBase.update(queryItem);
+			p_dataBase.update(queryItemRelation);
+		}
 	}
 	
 	private UUID id;
 	private Profile profile;
 	private int total = 0;
+	private int discount = 0;
 	private boolean isCompleted = false;
 	private ArrayList<Item> items;
 	private LocalDateTime creationDate;
 	private Payment paymentMethod;
 	
-	Order() {
+	public Order() {
 		this.id = java.util.UUID.randomUUID();
 		this.creationDate = LocalDateTime.now();
-		
 	}
 	
-	Order(Profile p_profile) {
+	public Order(Profile p_profile) {
 		this.id = java.util.UUID.randomUUID();
 		this.profile = p_profile;
 		this.creationDate = LocalDateTime.now();
 	}
 	
-	public void addItem(String p_name, int p_price) {
-		Item item = new Item(p_name, p_price);
+	public void addItem(Game p_game, int p_price) {
+		Item item = new Item(p_game, p_price);
 		
 		items.add(item);
 		total += item.getPrice();
@@ -121,20 +147,21 @@ public class Order {
 		}
 	}
 	
-	public void save(DataBase dataBase) {
+	public void save(DataBase p_dataBase) {
 		// TODO: save order in the data base
 	}
 	
-	public void update(DataBase dataBase) {
+	public void update(DataBase p_dataBase) {
 		// TODO: update existing order in the data base
 	}
 	
-	public void delete(DataBase dataBase) {
+	public void delete(DataBase p_dataBase) {
 		// TODO: delete existing order in the data base
 	}
 	
-	public void close() {
+	public void close(DataBase p_dataBase) {
 		// TODO: check payment and product is available to buy
 		this.isCompleted = true;
+		this.save(p_dataBase);
 	}
 }

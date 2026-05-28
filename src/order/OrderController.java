@@ -17,7 +17,7 @@ public class OrderController {
 	public static DataBase dataBase;
 	
 	@GetMapping("/{id}")
-	public String getMedia(@PathVariable("id") UUID p_id) {
+	public String getOrder(@PathVariable("id") UUID p_id) {
 		Gson gson = new Gson();
 		Order order = new Order();
 		
