@@ -22,6 +22,10 @@ public class Order {
 			this.game = p_game;
 			this.price = p_price;
 		}
+		
+		Item() {
+			
+		}
 
 		public int getPrice() {
 			return this.price;
@@ -125,6 +129,26 @@ public class Order {
 		return creationDate;
 	}
 	
+	private ArrayList<Item> loadAllItems(DataBase p_dataBase) {
+		String query = "SELECT * FROM order_items WHERE order_id = '" + this.id.toString() + ";";
+		ResultSet rawOrder = p_dataBase.get(query);
+		ArrayList<Item> items = new ArrayList<Item>();
+		
+		try {
+			while (rawOrder.next()) {
+				Item item = new Item();
+				
+				item.load(p_dataBase, rawOrder.getInt(1));
+				
+				items.add(item);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return items;
+	}
+	
 	public void load(DataBase p_dataBase, UUID p_id) {
 		String query = "SELECT * FROM orders WHERE user_id = '" + p_id.toString() + "' LIMIT 1;";
 		ResultSet rawOrder = p_dataBase.get(query);
@@ -140,7 +164,7 @@ public class Order {
 				this.total = rawOrder.getInt(3);
 				this.isCompleted = rawOrder.getBoolean(4);
 				
-				// TODO: load items from the order
+				this.items = loadAllItems(p_dataBase);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

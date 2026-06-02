@@ -110,11 +110,25 @@ public class Profile {
 		query = query + this.creationDate.toString();
 		query = query + ");";
 		
+		// TODO: save user game library
+		
 		p_dataBase.execute(query);
 	}
 	
 	public void update(DataBase p_dataBase) {
+		String query = "UPDATE users SET";
 		
+		query = query + " first_name = '" + this.firstName + "'";
+		query = query + " last_name = '" + this.lastName + "'";
+		query = query + " wallet = '" + this.wallet + "'";
+		query = query + " points = '" + this.points + "'";
+		query = query + " email = '" + this.email + "'";
+		query = query + " password = '" + this.password + "'";
+		query = query + " WHERE id =" + this.id.toString();
+		
+		// TODO: update user game library
+		
+		p_dataBase.execute(query);
 	}
 	
 	public void delete(DataBase p_dataBase) {

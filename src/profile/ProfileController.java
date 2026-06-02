@@ -19,7 +19,7 @@ import product.Game;
 
 @RestController
 @RequestMapping("/profiles")
-public class UserController {
+public class ProfileController {
 	public static DataBase dataBase;
 	
 	@GetMapping("")

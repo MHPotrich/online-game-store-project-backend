@@ -6,9 +6,16 @@ import dataBase.DataBase;
 import media.MediaController;
 import order.OrderController;
 import product.GameController;
-import profile.UserController;
+import profile.ProfileController;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {
+		"mainPackage",
+		"media",
+		"order",
+		"payment",
+		"product",
+		"profile"
+})
 public class Main {
 	public static void main(String[] args) {
 		String dbUrl = "jdbc:postgresql://localhost:5432/online-game-store-db";
@@ -17,7 +24,7 @@ public class Main {
 		DataBase dataBase = new DataBase(dbUrl, dbUsername, dbPassword);
 		
 		GameController.dataBase = dataBase;
-		UserController.dataBase = dataBase;
+		ProfileController.dataBase = dataBase;
 		MediaController.dataBase = dataBase;
 		OrderController.dataBase = dataBase;
 		
@@ -34,7 +41,7 @@ public class Main {
 		// create relation tables
 		dataBase.execute("CREATE TABLE IF NOT EXISTS user_games ( user_id UUID NOT NULL REFERENCES users(id), game_id UUID NOT NULL REFERENCES games(id), PRIMARY KEY (user_id, game_id) );");
 		dataBase.execute("CREATE TABLE IF NOT EXISTS user_medias ( user_id UUID NOT NULL REFERENCES users(id), media_id UUID NOT NULL REFERENCES medias(id), PRIMARY KEY (user_id, media_id) );");
-		dataBase.execute("CREATE TABLE IF NOT EXISTS order_items ( order_id INT NOT NULL REFERENCES orders(id), item_id INT NOT NULL REFERENCES order_items(id), PRIMARY KEY (order_id, item_id) );");
+		dataBase.execute("CREATE TABLE IF NOT EXISTS order_items ( order_id INT NOT NULL REFERENCES orders(id), item_id INT NOT NULL REFERENCES order_item(id), PRIMARY KEY (order_id, item_id) );");
 		
 		SpringApplication.run(Main.class, args);
 		
