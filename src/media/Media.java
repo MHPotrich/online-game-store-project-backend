@@ -62,7 +62,7 @@ public class Media {
 	}
 	
 	public void save(DataBase p_dataBase) {
-		String query = "INSERT INTO games (id, url, type, alt)";
+		String query = "INSERT INTO midias (id, url, type, alt)";
 		
 		query = query + " VALUES (";
 		query = query + "'" + this.id.toString() + "'" + ", ";
@@ -71,13 +71,18 @@ public class Media {
 		query = query + "'" + this.description + "'";
 		query = query + ");";
 		
-		//System.out.println(query);
-		
 		p_dataBase.execute(query);
 	}
 	
 	public void update(DataBase p_dataBase) {
+		String query = "UPDATE medias SET";
 		
+		query = query + " url = '" + this.url + "'";
+		query = query + " type = '" + this.type + "'";
+		query = query + " description = '" + this.description + "'";
+		query = query + " WHERE id = " + this.id.toString();
+		
+		p_dataBase.execute(query);
 	}
 	
 	public void delete(DataBase p_dataBase) {

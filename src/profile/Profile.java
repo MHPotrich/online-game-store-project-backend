@@ -124,7 +124,7 @@ public class Profile {
 		query = query + " points = '" + this.points + "'";
 		query = query + " email = '" + this.email + "'";
 		query = query + " password = '" + this.password + "'";
-		query = query + " WHERE id =" + this.id.toString();
+		query = query + " WHERE id = " + this.id.toString();
 		
 		// TODO: update user game library
 		
