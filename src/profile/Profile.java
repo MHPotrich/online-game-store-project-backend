@@ -1,7 +1,7 @@
 package profile;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -15,27 +15,30 @@ public class Profile {
 	private ArrayList<Game> library;
 	private int wallet = 0;
 	private int points = 0;
-	private LocalDateTime creationDate;
+	private String creationDate;
 	private String password;
 	private String email;
 	
-	Profile(String p_firstName, String p_lastName) {
+	public Profile(String p_firstName, String p_lastName) {
 		this.id = java.util.UUID.randomUUID();
 		this.firstName = p_firstName;
 		this.lastName = p_lastName;
-		this.creationDate = LocalDateTime.now();
+		this.creationDate = Instant.now().toString();
+		this.library = new ArrayList<Game>();
 	}
 	
-	Profile(UUID p_id, String p_firstName, String p_lastName) {
+	public Profile(UUID p_id, String p_firstName, String p_lastName) {
 		this.id = p_id;
 		this.firstName = p_firstName;
 		this.lastName = p_lastName;
-		this.creationDate = LocalDateTime.now();
+		this.creationDate = Instant.now().toString();
+		this.library = new ArrayList<Game>();
 	}
 	
 	public Profile() {
 		this.id = java.util.UUID.randomUUID();
-		this.creationDate = LocalDateTime.now();
+		this.creationDate = Instant.now().toString();
+		this.library = new ArrayList<Game>();
 	}
 	
 	public boolean buyGame(Game p_game) {
@@ -64,7 +67,7 @@ public class Profile {
 		return id;
 	}
 
-	public LocalDateTime getCreationDate() {
+	public String getCreationDate() {
 		return creationDate;
 	}
 	
@@ -74,6 +77,10 @@ public class Profile {
 	
 	public void setPoints(int p_points) {
 		this.points = p_points;
+	}
+	
+	public ArrayList<Game> getLibrary() {
+		return this.library;
 	}
 	
 	public void load(DataBase p_dataBase, UUID p_id) {
@@ -89,7 +96,7 @@ public class Profile {
 				this.points = rawUser.getInt(5);
 				this.email = rawUser.getString(6);
 				this.password = rawUser.getString(7);
-				this.creationDate = LocalDateTime.parse(rawUser.getString(8));
+				this.creationDate = rawUser.getString(8);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -107,7 +114,7 @@ public class Profile {
 		query = query + this.points + ", ";
 		query = query + "'" + this.email + "'" + ", ";
 		query = query + "'" + this.password + "'" + ", ";
-		query = query + this.creationDate.toString();
+		query = query + "'" + this.creationDate + "'";
 		query = query + ");";
 		
 		// TODO: save user game library
@@ -153,7 +160,7 @@ public class Profile {
 		this.email = p_email;
 	}
 	
-	private void setCreationDate(LocalDateTime p_creationDate) {
+	private void setCreationDate(String p_creationDate) {
 		this.creationDate = p_creationDate;
 	}
 	
@@ -177,7 +184,7 @@ public class Profile {
 				int points = rawUsers.getInt(5);
 				String email = rawUsers.getString(6);
 				String password = rawUsers.getString(7);
-				LocalDateTime creationDate = LocalDateTime.parse(rawUsers.getString(8));
+				String creationDate = rawUsers.getString(8);
 				Profile user = new Profile(id, firstName, lastName);
 				
 				user.setEmail(email);

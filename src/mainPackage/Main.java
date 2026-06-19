@@ -33,7 +33,7 @@ public class Main {
 		
 		// create tables
 		dataBase.execute("CREATE TABLE IF NOT EXISTS games ( id UUID NOT NULL PRIMARY KEY, title VARCHAR(50) NOT NULL, cover_image VARCHAR(100) NOT NULL, list_price INT NOT NULL, sale_price INT NOT NULL, is_active BOOLEAN NOT NULL );");
-		dataBase.execute("CREATE TABLE IF NOT EXISTS users ( id UUID NOT NULL PRIMARY KEY, first_name VARCHAR(10) NOT NULL, last_name VARCHAR(10) NOT NULL, wallet INT NOT NULL, points INT NOT NULL, email VARCHAR(50) NOT NULL, password VARCHAR(50) NOT NULL, creation_date DATE NOT NULL );");
+		dataBase.execute("CREATE TABLE IF NOT EXISTS users ( id UUID NOT NULL PRIMARY KEY, first_name VARCHAR(10) NOT NULL, last_name VARCHAR(10) NOT NULL, wallet INT NOT NULL, points INT NOT NULL, email VARCHAR(50) NOT NULL, password VARCHAR(50) NOT NULL, creation_date TIMESTAMPTZ NOT NULL );");
 		dataBase.execute("CREATE TABLE IF NOT EXISTS medias ( id UUID NOT NULL PRIMARY KEY, url VARCHAR(200) NOT NULL, type VARCHAR(5) NOT NULL, alt VARCHAR(50) NOT NULL );");
 		dataBase.execute("CREATE TABLE IF NOT EXISTS orders ( id SERIAL PRIMARY KEY, profile UUID NOT NULL, total INT, discount INT, placed_order BOOL NOT NULL, creation_date DATE NOT NULL, payment UUID NOT NULL );");
 		dataBase.execute("CREATE TABLE IF NOT EXISTS order_item ( id SERIAL PRIMARY KEY, game UUID NOT NULL, total INT );");
