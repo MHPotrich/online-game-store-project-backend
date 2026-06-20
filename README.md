@@ -13,14 +13,22 @@
 
 ## Routes
 
-### Users
-- Get - `/users`
-- Post - `/users`
-- Get - `/users/<user-id>`
-- Delete - `/users/<user-id>`
+### Profiles
+- Get - `/profiles`
+- Post - `/profiles`
+- Get - `/profiles/<profile-id>`
+- Delete - `/profiles/<profile-id>`
+
 ### Games
 - Get - `/games`
 - Post - `/games`
 - Get - `/games/<game-id>`
 - Delete - `/games/<game-id>`
 
+### Orders
+- Get - `/order/<order-id>`
+
+### Media
+- Get - `/media/<media-id>`
+- Post - `/media`
+- Delete - `/media`
