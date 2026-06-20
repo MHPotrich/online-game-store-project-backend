@@ -1,4 +1,4 @@
-# Create a game
+## Create game
 - path: `/games`
 - method: `POST`
 - body:
@@ -24,7 +24,7 @@
     | `isActive` | `Boolean` |
 - failed response:
 
-# Get a game
+## Get game
 - path: `/games/<game-id>`
 - method: `GET`
 - successful response:
@@ -40,14 +40,14 @@
     | `isActive` | `Boolean` |
 - failed response:
 
-# Delete a game
+## Delete game
 - path: `/games/<game-id>`
 - method: `DELETE`
 - successful response:
   - status code: `200`
 - failed response:
 
-# List all registered games
+## List all registered games
 - path: `/games`
 - method: `GET`
 - successful response:
