@@ -40,7 +40,7 @@ public class MediaController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public void deleteGame(@PathVariable("id") UUID p_id) {
+	public void deleteMedia(@PathVariable("id") UUID p_id) {
 		Media media = new Media();
 		
 		media.load(dataBase, p_id);
