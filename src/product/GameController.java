@@ -34,6 +34,8 @@ public class GameController {
 		
 		game.load(dataBase, p_id);
 		
+		// TODO: create response for when the game doesn't exists
+		
 		return gson.toJson(game, Game.class);
 	}
 	
@@ -52,5 +54,7 @@ public class GameController {
 		
 		game.load(dataBase, p_id);
 		game.delete(dataBase);
+		
+		// TODO: create response for when the specified game doesn't exists
 	}
 }

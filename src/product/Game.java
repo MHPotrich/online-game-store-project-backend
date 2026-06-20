@@ -96,13 +96,20 @@ public class Game {
 		query = query + this.isActive;
 		query = query + ");";
 		
-		//System.out.println(query);
-		
 		p_dataBase.execute(query);
 	}
 	
 	public void update(DataBase p_dataBase) {
+		String query = "UPDATE users SET";
 		
+		query = query + " title = '" + this.title + "'";
+		query = query + " list_price = '" + this.listPrice + "'";
+		query = query + " sale_price = '" + this.salePrice + "'";
+		query = query + " cover_image = '" + this.coverImage + "'";
+		query = query + " is_active = '" + this.isActive + "'";
+		query = query + " WHERE id = " + this.id.toString();
+		
+		p_dataBase.execute(query);
 	}
 	
 	public void delete(DataBase p_dataBase) {
