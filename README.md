@@ -13,7 +13,4 @@
 
 ## Routes
 
-- profiles: [routes](/PROFILES-ROUTES.md)
-- games: [routes](/GAMES-ROUTES.md)
-- orders: [routes](/ORDERS-ROUTES.md)
-- media: [routes](/MEDIA-ROUTES.md)
+- Swagger: ```/swagger-ui/index.html```
