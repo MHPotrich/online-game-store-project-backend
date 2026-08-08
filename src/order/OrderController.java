@@ -10,12 +10,23 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 
 import dataBase.DataBase;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/order")
 public class OrderController {
 	public static DataBase dataBase;
 	
+	@Operation(
+    		summary = "Get order by ID",
+    		description = "return order"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Return order with the same ID."),
+        @ApiResponse(responseCode = "404", description = "Return when order with specified ID is not found.")
+    })
 	@GetMapping("/{id}")
 	public String getOrder(@PathVariable("id") UUID p_id) {
 		Gson gson = new Gson();

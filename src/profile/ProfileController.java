@@ -89,6 +89,15 @@ public class ProfileController {
         return gson.toJson(convertProfileToJson(profile));
     }
 
+    @Operation(
+    		summary = "Create profile",
+    		description = "return profile"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Return profile"),
+        @ApiResponse(responseCode = "422", description = "Invalid profile"),
+        @ApiResponse(responseCode = "500", description = "Internal error")
+    })
     @PostMapping("")
     public String createProfile(@RequestBody String p_body) {
     	Gson gson = new Gson();
@@ -99,6 +108,15 @@ public class ProfileController {
         return gson.toJson(convertProfileToJson(newProfile));
     }
 
+    @Operation(
+    		summary = "Delete a profile",
+    		description = ""
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Profile deleted successfuly"),
+        @ApiResponse(responseCode = "404", description = "Invalid profile"),
+        @ApiResponse(responseCode = "500", description = "Internal error")
+    })
     @DeleteMapping("/{id}")
     public void deleteProfile(@PathVariable("id") UUID p_id) {
         Profile profile = new Profile();
@@ -107,6 +125,15 @@ public class ProfileController {
         profile.delete(dataBase);
     }
 
+    @Operation(
+    		summary = "Buy item",
+    		description = "return order"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Return order"),
+        @ApiResponse(responseCode = "422", description = "Invalid game or profile"),
+        @ApiResponse(responseCode = "500", description = "Internal error")
+    })
     @PostMapping("/{profile_id}/cart/{game_id}")
     public String buy(
         @PathVariable("profile_id") UUID p_profile_id,
