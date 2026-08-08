@@ -5,6 +5,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import dataBase.DataBase;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import java.util.ArrayList;
 import java.util.UUID;
 import order.Order;
@@ -46,6 +51,13 @@ public class ProfileController {
         return jsonProfile;
     }
 
+    @Operation(
+    		summary = "List all profiles",
+    		description = "Return a list of profiles"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Return profiles.")
+    })
     @GetMapping("")
     public String listProfiles() {
         Gson gson = new Gson();
@@ -59,8 +71,16 @@ public class ProfileController {
         return gson.toJson(profiles, ArrayList.class);
     }
 
+    @Operation(
+    		summary = "Get profile by ID",
+    		description = "return profile"
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Return profile with the same ID."),
+        @ApiResponse(responseCode = "404", description = "Return when profile with specified ID is not found.")
+    })
     @GetMapping("/{id}")
-    public String getProfile(@PathVariable("id") UUID p_id) {
+    public String getProfile(@Parameter(description = "Profile ID") @PathVariable("id") UUID p_id) {
         Gson gson = new Gson();
         Profile profile = new Profile();
 
