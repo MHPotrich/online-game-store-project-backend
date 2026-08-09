@@ -61,7 +61,7 @@ public class ProfileController {
     @GetMapping("")
     public String listProfiles() {
         Gson gson = new Gson();
-        ArrayList<Profile> profiles = Profile.loadUsers(dataBase, "", "");
+        ArrayList<Profile> profiles = ProfileRepository.findAllProfiles("", "");
         JsonArray profilesJson = new JsonArray();
         
         for(Profile profile: profiles) {
@@ -82,9 +82,7 @@ public class ProfileController {
     @GetMapping("/{id}")
     public String getProfile(@Parameter(description = "Profile ID") @PathVariable("id") UUID p_id) {
         Gson gson = new Gson();
-        Profile profile = new Profile();
-
-        profile.load(dataBase, p_id);
+        Profile profile = ProfileRepository.findProfileById(p_id).getFirst();
 
         return gson.toJson(convertProfileToJson(profile));
     }
@@ -103,7 +101,7 @@ public class ProfileController {
     	Gson gson = new Gson();
         Profile newProfile = new Gson().fromJson(p_body, Profile.class);
 
-        newProfile.save(dataBase);
+        ProfileRepository.saveProfile(newProfile);
 
         return gson.toJson(convertProfileToJson(newProfile));
     }
@@ -119,10 +117,7 @@ public class ProfileController {
     })
     @DeleteMapping("/{id}")
     public void deleteProfile(@PathVariable("id") UUID p_id) {
-        Profile profile = new Profile();
-
-        profile.load(dataBase, p_id);
-        profile.delete(dataBase);
+        ProfileRepository.deleteProfileById(p_id);
     }
 
     @Operation(
@@ -140,12 +135,9 @@ public class ProfileController {
         @PathVariable("game_id") UUID p_game_id
     ) {
         Gson gson = new Gson();
-        Profile profile = new Profile();
+        Profile profile = ProfileRepository.findProfileById(p_profile_id).getFirst();
         Game game = new Game();
         Order order = new Order(profile);
-
-        profile.load(dataBase, p_profile_id);
-        game.load(dataBase, p_game_id);
 
         // TODO: authenticate user before continue
 

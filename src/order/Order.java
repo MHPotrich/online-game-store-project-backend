@@ -9,6 +9,7 @@ import dataBase.DataBase;
 import payment.Payment;
 import product.Game;
 import profile.Profile;
+import profile.ProfileRepository;
 
 public class Order {
 	
@@ -158,8 +159,7 @@ public class Order {
 				this.id = UUID.fromString(rawOrder.getString(1));
 				
 				UUID user_id = UUID.fromString(rawOrder.getString(2));
-				this.profile = new Profile();
-				profile.load(p_dataBase, user_id);;
+				this.profile = ProfileRepository.findProfileById(user_id).getFirst();
 				
 				this.total = rawOrder.getInt(3);
 				this.isCompleted = rawOrder.getBoolean(4);

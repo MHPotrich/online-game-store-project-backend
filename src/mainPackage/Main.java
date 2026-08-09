@@ -8,6 +8,7 @@ import media.MediaController;
 import order.OrderController;
 import product.GameController;
 import profile.ProfileController;
+import profile.ProfileRepository;
 
 @SpringBootApplication(scanBasePackages = {
 		"mainPackage",
@@ -29,6 +30,8 @@ public class Main {
 		ProfileController.dataBase = dataBase;
 		MediaController.dataBase = dataBase;
 		OrderController.dataBase = dataBase;
+		
+		ProfileRepository.dataBase = dataBase;
 		
 		// import uuid inside postgresql
 		dataBase.execute("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");

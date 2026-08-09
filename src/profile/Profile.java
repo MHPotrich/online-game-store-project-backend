@@ -75,73 +75,16 @@ public class Profile {
 		this.wallet = p_wallet;
 	}
 	
+	public int getWallet() {
+		return this.wallet;
+	}
+	
 	public void setPoints(int p_points) {
 		this.points = p_points;
 	}
 	
 	public ArrayList<Game> getLibrary() {
 		return this.library;
-	}
-	
-	public void load(DataBase p_dataBase, UUID p_id) {
-		String query = "SELECT * FROM users WHERE id = '" + p_id.toString() + "' LIMIT 1;";
-		ResultSet rawUser = p_dataBase.get(query);
-		
-		try {
-			while (rawUser.next()) {
-				this.id = UUID.fromString(rawUser.getString(1));
-				this.firstName = rawUser.getString(2);
-				this.lastName = rawUser.getString(3);
-				this.wallet = rawUser.getInt(4);
-				this.points = rawUser.getInt(5);
-				this.email = rawUser.getString(6);
-				this.password = rawUser.getString(7);
-				this.creationDate = rawUser.getString(8);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void save(DataBase p_dataBase) {
-		String query = "INSERT INTO users (id, first_name, last_name, wallet, points, email, password, creation_date)";
-		
-		query = query + " VALUES (";
-		query = query + "'" + this.id.toString() + "'" + ", ";
-		query = query + "'" + this.firstName + "'" + ", ";
-		query = query + "'" + this.lastName + "'" + ", ";
-		query = query + this.wallet + ", ";
-		query = query + this.points + ", ";
-		query = query + "'" + this.email + "'" + ", ";
-		query = query + "'" + this.password + "'" + ", ";
-		query = query + "'" + this.creationDate + "'";
-		query = query + ");";
-		
-		// TODO: save user game library
-		
-		p_dataBase.execute(query);
-	}
-	
-	public void update(DataBase p_dataBase) {
-		String query = "UPDATE users SET";
-		
-		query = query + " first_name = '" + this.firstName + "'";
-		query = query + " last_name = '" + this.lastName + "'";
-		query = query + " wallet = '" + this.wallet + "'";
-		query = query + " points = '" + this.points + "'";
-		query = query + " email = '" + this.email + "'";
-		query = query + " password = '" + this.password + "'";
-		query = query + " WHERE id = " + this.id.toString();
-		
-		// TODO: update user game library
-		
-		p_dataBase.execute(query);
-	}
-	
-	public void delete(DataBase p_dataBase) {
-		String query = "DELETE FROM users WHERE id = '" + this.id.toString() + "';";
-		
-		p_dataBase.update(query);
 	}
 
 	public String getPassword() {
@@ -160,46 +103,8 @@ public class Profile {
 		this.email = p_email;
 	}
 	
-	private void setCreationDate(String p_creationDate) {
+	public void setCreationDate(String p_creationDate) {
 		this.creationDate = p_creationDate;
-	}
-	
-	public static ArrayList<Profile> loadUsers(DataBase p_dataBase, String p_targetProperty, String p_targetValue) {
-		ResultSet rawUsers;
-		String query = "SELECT * FROM users";
-		ArrayList<Profile> users = new ArrayList<Profile>();
-		
-		if(p_targetProperty.isEmpty() == false && p_targetValue.isEmpty() == false) {
-			query = query + "WHERE " + p_targetProperty + " = " + p_targetValue + ";";
-		}
-		
-		rawUsers = p_dataBase.get(query);
-		
-		try {
-			while (rawUsers.next()) {
-				UUID id = UUID.fromString(rawUsers.getString(1));
-				String firstName = rawUsers.getString(2);
-				String lastName = rawUsers.getString(3);
-				int wallet = rawUsers.getInt(4);
-				int points = rawUsers.getInt(5);
-				String email = rawUsers.getString(6);
-				String password = rawUsers.getString(7);
-				String creationDate = rawUsers.getString(8);
-				Profile user = new Profile(id, firstName, lastName);
-				
-				user.setEmail(email);
-				user.setPassword(password);
-				user.setPoints(points);
-				user.setWallet(wallet);
-				user.setCreationDate(creationDate);
-				
-				users.add(user);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return users;
 	}
 	
 	public void removeGame(UUID p_id) {
