@@ -3,6 +3,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import dataBase.DataBase;
+import io.github.cdimascio.dotenv.Dotenv;
 import media.MediaController;
 import order.OrderController;
 import product.GameController;
@@ -18,9 +19,10 @@ import profile.ProfileController;
 })
 public class Main {
 	public static void main(String[] args) {
-		String dbUrl = "jdbc:postgresql://localhost:5432/online-game-store-db";
-		String dbUsername = "admin";
-		String dbPassword = "admin";
+		Dotenv dotenv = Dotenv.load();
+		String dbUrl = dotenv.get("DB_URL");
+		String dbUsername = dotenv.get("DB_USER");
+		String dbPassword = dotenv.get("DB_PASSWORD");
 		DataBase dataBase = new DataBase(dbUrl, dbUsername, dbPassword);
 		
 		GameController.dataBase = dataBase;
