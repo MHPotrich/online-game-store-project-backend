@@ -1,11 +1,8 @@
 package profile;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import dataBase.DataBase;
 import product.Game;
 
 public class Profile {

@@ -1,10 +1,5 @@
 package product;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.UUID;
-
-import dataBase.DataBase;
 
 public class Game {
 	private UUID id;
@@ -66,90 +61,11 @@ public class Game {
 		this.isActive = isActive;
 	}
 	
-	public void load(DataBase p_dataBase, UUID p_id) {
-		String query = "SELECT * FROM games WHERE id = '" + p_id.toString() + "' LIMIT 1;";
-		ResultSet rawGame = p_dataBase.get(query);
-		
-		try {
-			while (rawGame.next()) {
-				this.id = UUID.fromString(rawGame.getString(1));
-				this.title = rawGame.getString(2);
-				this.coverImage = rawGame.getString(3);
-				this.listPrice = rawGame.getInt(4);
-				this.salePrice = rawGame.getInt(5);
-				this.isActive = rawGame.getBoolean(6);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public int getListPrice() {
+		return this.listPrice;
 	}
 	
-	public void save(DataBase p_dataBase) {
-		String query = "INSERT INTO games (id, title, cover_image, list_price, sale_price, is_active)";
-		
-		query = query + " VALUES (";
-		query = query + "'" + this.id.toString() + "'" + ", ";
-		query = query + "'" + this.title + "'" + ", ";
-		query = query + "'" + this.coverImage + "'" + ", ";
-		query = query + this.listPrice + ", ";
-		query = query + this.salePrice + ", ";
-		query = query + this.isActive;
-		query = query + ");";
-		
-		p_dataBase.execute(query);
-	}
-	
-	public void update(DataBase p_dataBase) {
-		String query = "UPDATE users SET";
-		
-		query = query + " title = '" + this.title + "'";
-		query = query + " list_price = '" + this.listPrice + "'";
-		query = query + " sale_price = '" + this.salePrice + "'";
-		query = query + " cover_image = '" + this.coverImage + "'";
-		query = query + " is_active = '" + this.isActive + "'";
-		query = query + " WHERE id = " + this.id.toString();
-		
-		p_dataBase.execute(query);
-	}
-	
-	public void delete(DataBase p_dataBase) {
-		String query = "DELETE FROM games WHERE id = '" + this.id.toString() + "';";
-		
-		p_dataBase.update(query);
-	}
-	
-	public static ArrayList<Game> loadGames(DataBase p_dataBase, String p_targetProperty, String p_targetValue) {
-		ResultSet rawGames;
-		String query = "SELECT * FROM Games";
-		ArrayList<Game> games = new ArrayList<Game>();
-		
-		if(p_targetProperty.isEmpty() == false && p_targetValue.isEmpty() == false) {
-			query = query + "WHERE " + p_targetProperty + " = " + p_targetValue + ";";
-		}
-		
-		rawGames = p_dataBase.get(query);
-		
-		try {
-			while (rawGames.next()) {
-				String id = rawGames.getString(1);
-				String title = rawGames.getString(2);
-				String coverImage = rawGames.getString(3);
-				Integer listPrice = rawGames.getInt(4);
-				Integer salePrice = rawGames.getInt(5);
-				Boolean isActive = rawGames.getBoolean(6);
-				Game game = new Game(id, title);
-				
-				game.setCoverImage(coverImage);
-				game.setListPrice(listPrice);
-				game.setSalePrice(salePrice);
-				game.setActive(isActive);
-				
-				games.add(game);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return games;
+	public int getSalePrice() {
+		return this.salePrice;
 	}
 }

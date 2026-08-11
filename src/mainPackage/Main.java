@@ -4,10 +4,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import dataBase.DataBase;
 import io.github.cdimascio.dotenv.Dotenv;
-import media.MediaController;
-import order.OrderController;
-import product.GameController;
-import profile.ProfileController;
+import media.MediaRepository;
+import order.OrderRepository;
+import order.item.ItemRepository;
+import product.GameRepository;
 import profile.ProfileRepository;
 
 @SpringBootApplication(scanBasePackages = {
@@ -26,12 +26,11 @@ public class Main {
 		String dbPassword = dotenv.get("DB_PASSWORD");
 		DataBase dataBase = new DataBase(dbUrl, dbUsername, dbPassword);
 		
-		GameController.dataBase = dataBase;
-		ProfileController.dataBase = dataBase;
-		MediaController.dataBase = dataBase;
-		OrderController.dataBase = dataBase;
-		
 		ProfileRepository.dataBase = dataBase;
+		OrderRepository.dataBase = dataBase;
+		ItemRepository.dataBase = dataBase;
+		GameRepository.dataBase = dataBase;
+		MediaRepository.dataBase = dataBase;
 		
 		// import uuid inside postgresql
 		dataBase.execute("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";");

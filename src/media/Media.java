@@ -1,10 +1,6 @@
 package media;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.UUID;
-
-import dataBase.DataBase;
 
 public class Media {
 	private UUID id;
@@ -14,6 +10,10 @@ public class Media {
 	
 	Media() {
 		this.id = java.util.UUID.randomUUID();
+	}
+	
+	Media(UUID p_id) {
+		this.id = p_id;
 	}
 	
 	Media(String p_url, String p_type) {
@@ -45,49 +45,15 @@ public class Media {
 		return this.type;
 	}
 	
-	public void load(DataBase p_dataBase, UUID p_id) {
-		String query = "SELECT * FROM medias WHERE id = '" + p_id.toString() + "' LIMIT 1;";
-		ResultSet rawMedia = p_dataBase.get(query);
-		
-		try {
-			while (rawMedia.next()) {
-				this.id = UUID.fromString(rawMedia.getString(1));
-				this.url = rawMedia.getString(2);
-				this.description = rawMedia.getString(3);
-				this.type = rawMedia.getString(4);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public void setUrl(String p_url) {
+		this.url = p_url;
 	}
 	
-	public void save(DataBase p_dataBase) {
-		String query = "INSERT INTO midias (id, url, type, alt)";
-		
-		query = query + " VALUES (";
-		query = query + "'" + this.id.toString() + "'" + ", ";
-		query = query + "'" + this.url + "'" + ", ";
-		query = query + "'" + this.type + "'" + ", ";
-		query = query + "'" + this.description + "'";
-		query = query + ");";
-		
-		p_dataBase.execute(query);
+	public void setDescription(String p_description) {
+		this.description = p_description;
 	}
 	
-	public void update(DataBase p_dataBase) {
-		String query = "UPDATE medias SET";
-		
-		query = query + " url = '" + this.url + "'";
-		query = query + " type = '" + this.type + "'";
-		query = query + " description = '" + this.description + "'";
-		query = query + " WHERE id = " + this.id.toString();
-		
-		p_dataBase.execute(query);
-	}
-	
-	public void delete(DataBase p_dataBase) {
-		String query = "DELETE FROM medias WHERE id = '" + this.id.toString() + "';";
-		
-		p_dataBase.update(query);
+	public void setType(String p_type) {
+		this.type = p_type;
 	}
 }

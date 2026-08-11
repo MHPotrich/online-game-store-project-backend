@@ -1,78 +1,15 @@
 package order;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
 import dataBase.DataBase;
+import order.item.Item;
 import payment.Payment;
 import product.Game;
 import profile.Profile;
-import profile.ProfileRepository;
 
 public class Order {
-	
-	// TODO: create data base table for order items
-	private class Item {
-		private Integer id;
-		private Game game;
-		private int price = 0;
-		
-		Item(Game p_game, int p_price) {
-			this.game = p_game;
-			this.price = p_price;
-		}
-		
-		Item() {
-			
-		}
-
-		public int getPrice() {
-			return this.price;
-		}
-		
-		public Game getGame() {
-			return this.game;
-		}
-		
-		public void load(DataBase p_dataBase, Integer p_orderId) {
-			String query = "SELECT * FROM order_items WHERE order_id = '" + p_orderId.toString() + "' LIMIT 1;";
-			ResultSet rawOrder = p_dataBase.get(query);
-			
-			try {
-				while (rawOrder.next()) {
-					Game game = new Game();
-					
-					game.load(p_dataBase, UUID.fromString(rawOrder.getString(2)));
-					
-					this.id = rawOrder.getInt(1);
-					this.game = game;
-					this.price = rawOrder.getInt(3);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		public void save() {
-			// TODO: save in the data base
-		}
-		
-		public void update() {
-			// TODO: update existing item in the data base
-		}
-		
-		public void delete(DataBase p_dataBase) {
-			String queryItem = "DELETE FROM order_item WHERE id = " + this.id.toString() + ";";
-			String queryItemRelation = "DELETE FROM order_items WHERE item_id = " + this.id.toString() + ";";
-			
-			
-			p_dataBase.update(queryItem);
-			p_dataBase.update(queryItemRelation);
-		}
-	}
-	
 	private UUID id;
 	private Profile profile;
 	private int total = 0;
@@ -91,6 +28,12 @@ public class Order {
 		this.id = java.util.UUID.randomUUID();
 		this.profile = p_profile;
 		this.creationDate = LocalDateTime.now();
+	}
+	
+	public Order(UUID p_id, Profile p_profile, LocalDateTime p_creationDate) {
+		this.id = p_id;
+		this.profile = p_profile;
+		this.creationDate = p_creationDate;
 	}
 	
 	public void addItem(Game p_game, int p_price) {
@@ -122,6 +65,14 @@ public class Order {
 		return total;
 	}
 	
+	public void setTotal(int p_total) {
+		this.total = p_total;
+	}
+	
+	public void setCompleted(Boolean p_isCompleted) {
+		this.isCompleted = p_isCompleted;
+	}
+	
 	public ArrayList<Item> getOrderItems() {
 		return items;
 	}
@@ -130,62 +81,9 @@ public class Order {
 		return creationDate;
 	}
 	
-	private ArrayList<Item> loadAllItems(DataBase p_dataBase) {
-		String query = "SELECT * FROM order_items WHERE order_id = '" + this.id.toString() + ";";
-		ResultSet rawOrder = p_dataBase.get(query);
-		ArrayList<Item> items = new ArrayList<Item>();
-		
-		try {
-			while (rawOrder.next()) {
-				Item item = new Item();
-				
-				item.load(p_dataBase, rawOrder.getInt(1));
-				
-				items.add(item);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return items;
-	}
-	
-	public void load(DataBase p_dataBase, UUID p_id) {
-		String query = "SELECT * FROM orders WHERE user_id = '" + p_id.toString() + "' LIMIT 1;";
-		ResultSet rawOrder = p_dataBase.get(query);
-		
-		try {
-			while (rawOrder.next()) {
-				this.id = UUID.fromString(rawOrder.getString(1));
-				
-				UUID user_id = UUID.fromString(rawOrder.getString(2));
-				this.profile = ProfileRepository.findProfileById(user_id).getFirst();
-				
-				this.total = rawOrder.getInt(3);
-				this.isCompleted = rawOrder.getBoolean(4);
-				
-				this.items = loadAllItems(p_dataBase);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void save(DataBase p_dataBase) {
-		// TODO: save order in the data base
-	}
-	
-	public void update(DataBase p_dataBase) {
-		// TODO: update existing order in the data base
-	}
-	
-	public void delete(DataBase p_dataBase) {
-		// TODO: delete existing order in the data base
-	}
-	
 	public void close(DataBase p_dataBase) {
 		// TODO: check payment and product is available to buy
 		this.isCompleted = true;
-		this.save(p_dataBase);
+		OrderRepository.saveOrder(this);
 	}
 }

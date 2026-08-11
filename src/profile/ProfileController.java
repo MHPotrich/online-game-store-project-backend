@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import dataBase.DataBase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,6 +12,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.ArrayList;
 import java.util.UUID;
 import order.Order;
+import order.OrderRepository;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,8 +26,6 @@ import product.Game;
 @RestController
 @RequestMapping("/profiles")
 public class ProfileController {
-
-    public static DataBase dataBase;
     
     private JsonObject convertProfileToJson(Profile profile) {
     	JsonObject jsonProfile = new JsonObject();
@@ -143,7 +142,7 @@ public class ProfileController {
 
         order.addItem(game, game.getActivePrice());
 
-        order.save(dataBase);
+        OrderRepository.saveOrder(order);
 
         return gson.toJson(order, Order.class);
     }

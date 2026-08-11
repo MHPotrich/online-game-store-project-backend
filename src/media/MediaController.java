@@ -12,20 +12,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 
-import dataBase.DataBase;
 import product.Game;
 
 @RestController
 @RequestMapping("/media")
 public class MediaController {
-	public static DataBase dataBase;
-	
 	@GetMapping("/{id}")
 	public String getMedia(@PathVariable("id") UUID p_id) {
 		Gson gson = new Gson();
 		Media media = new Media();
 		
-		media.load(dataBase, p_id);
+		MediaRepository.findMediaById(p_id);
 		
 		return gson.toJson(media, Game.class);
 	}
@@ -34,16 +31,13 @@ public class MediaController {
 	public String createMedia(@RequestBody String p_body) {
 		Media newMedia = new Gson().fromJson(p_body, Media.class);
 		
-		newMedia.save(dataBase);
+		MediaRepository.saveMedia(newMedia);
 		
 		return new Gson().toJson(newMedia, Game.class);
 	}
 	
 	@DeleteMapping("/{id}")
 	public void deleteMedia(@PathVariable("id") UUID p_id) {
-		Media media = new Media();
-		
-		media.load(dataBase, p_id);
-		media.delete(dataBase);
+		MediaRepository.deleteMediaById(p_id);
 	}
 }
