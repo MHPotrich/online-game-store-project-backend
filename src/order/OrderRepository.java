@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import dataBase.DataBase;
+import order.item.Item;
+import order.item.ItemRepository;
 import profile.Profile;
 import profile.ProfileRepository;
 
@@ -28,8 +30,9 @@ public class OrderRepository {
 				order.setTotal(rawOrder.getInt(3));
 				order.setCompleted(rawOrder.getBoolean(4));
 				
-				//this.items = loadAllItems(p_dataBase);
+				ArrayList<Item> items = ItemRepository.findItemsByOrderId(p_id);
 				
+				order.updateItems(items);
 				orders.add(order);
 			}
 		} catch (SQLException e) {
@@ -40,6 +43,18 @@ public class OrderRepository {
 	}
 	
 	public static void saveOrder(Order p_order) {
+		String query = "INSERT INTO orders (id, profile, total, discount, placed_order, creation_date, payment)";
 		
+		query = query + " VALUES (";
+		query = query + "'" + p_order.getId().toString() + "'" + ", ";
+		query = query + "'" + p_order.getProfile().getId().toString() + "'" + ", ";
+		query = query + p_order.getTotal() + ", ";
+		query = query + p_order.getDiscount() + ", ";
+		query = query + p_order.getIsCompleted() + ", ";
+		query = query + "'" + p_order.getCreationDate().toString() + "'" + ", ";
+		query = query + "'" + UUID.randomUUID() + "'" + ", ";
+		query = query + ");";
+		
+		dataBase.execute(query);
 	}
 }

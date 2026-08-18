@@ -15,7 +15,7 @@ public class Order {
 	private int total = 0;
 	private int discount = 0;
 	private boolean isCompleted = false;
-	private ArrayList<Item> items;
+	private ArrayList<Item> items = new ArrayList<Item>();
 	private LocalDateTime creationDate;
 	private Payment paymentMethod;
 	
@@ -81,9 +81,21 @@ public class Order {
 		return creationDate;
 	}
 	
+	public int getDiscount() {
+		return this.discount;
+	}
+	
+	public Boolean getIsCompleted() {
+		return this.isCompleted;
+	}
+	
 	public void close(DataBase p_dataBase) {
 		// TODO: check payment and product is available to buy
 		this.isCompleted = true;
 		OrderRepository.saveOrder(this);
+	}
+	
+	public void updateItems(ArrayList<Item> p_items) {
+		this.items = p_items;
 	}
 }

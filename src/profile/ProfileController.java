@@ -11,9 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import java.util.ArrayList;
 import java.util.UUID;
-import order.Order;
-import order.OrderRepository;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -98,7 +95,7 @@ public class ProfileController {
     @PostMapping("")
     public String createProfile(@RequestBody String p_body) {
     	Gson gson = new Gson();
-        Profile newProfile = new Gson().fromJson(p_body, Profile.class);
+        Profile newProfile = gson.fromJson(p_body, Profile.class);
 
         ProfileRepository.saveProfile(newProfile);
 
@@ -117,33 +114,5 @@ public class ProfileController {
     @DeleteMapping("/{id}")
     public void deleteProfile(@PathVariable("id") UUID p_id) {
         ProfileRepository.deleteProfileById(p_id);
-    }
-
-    @Operation(
-    		summary = "Buy item",
-    		description = "return order"
-    )
-    @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Return order"),
-        @ApiResponse(responseCode = "422", description = "Invalid game or profile"),
-        @ApiResponse(responseCode = "500", description = "Internal error")
-    })
-    @PostMapping("/{profile_id}/cart/{game_id}")
-    public String buy(
-        @PathVariable("profile_id") UUID p_profile_id,
-        @PathVariable("game_id") UUID p_game_id
-    ) {
-        Gson gson = new Gson();
-        Profile profile = ProfileRepository.findProfileById(p_profile_id).getFirst();
-        Game game = new Game();
-        Order order = new Order(profile);
-
-        // TODO: authenticate user before continue
-
-        order.addItem(game, game.getActivePrice());
-
-        OrderRepository.saveOrder(order);
-
-        return gson.toJson(order, Order.class);
     }
 }
