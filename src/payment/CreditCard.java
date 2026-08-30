@@ -1,4 +1,4 @@
-package mainPackage;
+package payment;
 
 public class CreditCard extends Payment {
 	private int number;

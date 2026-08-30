@@ -1,4 +1,4 @@
-package mainPackage;
+package payment;
 
 public class Payment {
 	private String fullName;

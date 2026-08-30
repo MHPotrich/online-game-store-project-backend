@@ -13,14 +13,4 @@
 
 ## Routes
 
-### Users
-- Get - `/users`
-- Post - `/users`
-- Get - `/users/<user-id>`
-- Delete - `/users/<user-id>`
-### Games
-- Get - `/games`
-- Post - `/games`
-- Get - `/games/<game-id>`
-- Delete - `/games/<game-id>`
-
+- Swagger: ```/swagger-ui/index.html```
