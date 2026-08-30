@@ -3,6 +3,8 @@ package order.item;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import dataBase.DataBase;
@@ -12,36 +14,27 @@ import product.GameRepository;
 public class ItemRepository {
 	public static DataBase dataBase;
 	
-	public static ArrayList<Item> findItemById(Integer p_id){
-		String query = "SELECT * FROM order_item WHERE id = '" + p_id.toString() + ";";
-		ResultSet rawOrder = dataBase.get(query);
+	private static ArrayList<Item> findItemsByQuery(String p_query) {
+		ResultSet rawOrder = dataBase.get(p_query);
 		ArrayList<Item> items = new ArrayList<Item>();
 		
 		try {
+			Map<Integer, UUID> cacheResultSets = new HashMap<Integer, UUID>();
+			
 			while (rawOrder.next()) {
-				// TODO: load game from database
-				Game game = GameRepository.findGameById(UUID.fromString(rawOrder.getString(2))).getFirst();
-				Item item = new Item(rawOrder.getInt(1), game, rawOrder.getInt(3));
+				UUID game_id = UUID.fromString(rawOrder.getString(2));
+				Item item = new Item(rawOrder.getInt(1), rawOrder.getInt(3));
+				
+				cacheResultSets.put(rawOrder.getInt(1), game_id);
 				
 				items.add(item);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return items;
-	}
-
-	public static ArrayList<Item> findItemsByOrderId(UUID p_orderId) {
-		String query = "SELECT * FROM order_items WHERE order_id = '" + p_orderId.toString() + ";";
-		ResultSet rawOrder = dataBase.get(query);
-		ArrayList<Item> items = new ArrayList<Item>();
-		
-		try {
-			while (rawOrder.next()) {
-				Item item = findItemById(rawOrder.getInt(1)).getFirst();
+			
+			for (Item item : items) {
+				UUID game_id = cacheResultSets.get(item.getId());
+				Game game = GameRepository.findGameById(game_id).getFirst();
 				
-				items.add(item);
+				item.setGame(game);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -50,12 +43,43 @@ public class ItemRepository {
 		return items;
 	}
 	
+	public static ArrayList<Item> findItemById(Integer p_id){
+		String query = "SELECT * FROM order_item WHERE id = " + p_id.toString() + ";";
+		
+		return findItemsByQuery(query);
+	}
+
+	public static ArrayList<Item> findItemsByOrderId(UUID p_orderId) {
+		String query = "SELECT * FROM order_item WHERE order_id = '" + p_orderId.toString() + "';";
+		
+		return findItemsByQuery(query);
+	}
+	
 	public static void deleteItemById(Integer p_id) {
 		String queryItem = "DELETE FROM order_item WHERE id = " + p_id.toString() + ";";
-		String queryItemRelation = "DELETE FROM order_items WHERE item_id = " + p_id.toString() + ";";
-		
-		
-		dataBase.update(queryItemRelation);
+
 		dataBase.update(queryItem);
+	}
+	
+	public static void createItem(Item p_item, UUID p_orderId) {
+		String query = "INSERT INTO order_item (id, game_id, order_id, total)";
+		
+		query = query + " VALUES (";
+		query = query + + p_item.getId() + ", ";
+		query = query + "'" + p_item.getGame().getId().toString() + "'" + ", ";
+		query = query + "'" + p_orderId.toString() + "'" + ", ";
+		query = query + p_item.getPrice();
+		query = query + ");";
+		
+		dataBase.execute(query);
+	}
+	
+	public static void updateItem(Item p_item) {
+		String query = "UPDATE order_item SET";
+		
+		query = query + " total = '" + p_item.getPrice() + "'";
+		query = query + " WHERE id = " + p_item.getId();
+		
+		dataBase.execute(query);
 	}
 }

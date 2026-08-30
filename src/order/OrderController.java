@@ -15,6 +15,8 @@ import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import order.item.Item;
+import order.item.ItemRepository;
 import product.Game;
 import product.GameRepository;
 import profile.Profile;
@@ -43,8 +45,9 @@ public class OrderController {
 	public String getOrder(@PathVariable("id") UUID p_id) {
 		Gson gson = new Gson();
 		Order order = OrderRepository.findOrderById(p_id).getFirst();
+		OrderDTO orderDTO = new OrderDTO(order);
 		
-		return gson.toJson(order, Order.class);
+		return gson.toJson(orderDTO, OrderDTO.class);
 	}
 	
 	@Operation(
@@ -61,7 +64,11 @@ public class OrderController {
 		Profile profile = ProfileRepository.findProfileById(UUID.fromString(body.profileId)).getFirst();
 		Order order = new Order(profile);
 		
-		// TODO: save profile and order
+		OrderRepository.createOrder(order);
+		
+		for(Item item: order.getOrderItems()) {
+			ItemRepository.createItem(item, order.getId());
+        }
 
 		return Map.of("id", order.getId().toString()).toString();
 	}
@@ -89,8 +96,18 @@ public class OrderController {
 
         order.addItem(game, game.getActivePrice());
 
-        OrderRepository.saveOrder(order);
+        OrderRepository.updateOrder(order);
+        
+        for(Item item: order.getOrderItems()) {
+        	if(ItemRepository.findItemById(item.getId()).isEmpty()) {
+        		ItemRepository.createItem(item, order.getId());
+        	} else {
+        		ItemRepository.updateItem(item);
+        	}
+        }
+        
+        OrderDTO orderDTO = new OrderDTO(order);
 
-        return gson.toJson(order, Order.class);
+        return gson.toJson(orderDTO, OrderDTO.class);
     }
 }

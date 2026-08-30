@@ -36,8 +36,13 @@ public class Order {
 		this.creationDate = p_creationDate;
 	}
 	
+	public Order(UUID p_id, LocalDateTime p_creationDate) {
+		this.id = p_id;
+		this.creationDate = p_creationDate;
+	}
+	
 	public void addItem(Game p_game, int p_price) {
-		Item item = new Item(p_game, p_price);
+		Item item = new Item(this.items.size() + 1, p_game, p_price);
 		
 		items.add(item);
 		total += item.getPrice();
@@ -92,10 +97,14 @@ public class Order {
 	public void close(DataBase p_dataBase) {
 		// TODO: check payment and product is available to buy
 		this.isCompleted = true;
-		OrderRepository.saveOrder(this);
+		OrderRepository.updateOrder(this);
 	}
 	
 	public void updateItems(ArrayList<Item> p_items) {
 		this.items = p_items;
+	}
+	
+	public void setProfile(Profile p_profile) {
+		this.profile = p_profile;
 	}
 }
