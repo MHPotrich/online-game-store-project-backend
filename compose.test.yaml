@@ -4,13 +4,13 @@ services:
     restart: always
     shm_size: 128mb
     environment:
-      POSTGRES_PASSWORD: admin
-      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
       POSTGRES_DB: online-game-store-db
     ports:
       - 5432:5432
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d online-game-store-db"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d online-game-store-db"]
       interval: 5s
       timeout: 5s
       retries: 5

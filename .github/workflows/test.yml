@@ -12,5 +12,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Set up environment file
+      run: |
+        cat <<EOF > .env
+        DB_URL=jdbc:postgresql://data-base:5432/online-game-store-db
+        DB_USER=${{ secrets.DB_USER }}
+        DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+        EOF
+
     - name: Build test image from compose.test.yaml
       run: docker compose -f compose.test.yaml up --build --abort-on-container-exit --exit-code-from online-game-store-backend
+
+    - name: Cleanup
+      if: always()
+      run: |
+        docker compose -f compose.test.yaml down -v
+        rm -f .env
