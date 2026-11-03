@@ -1,0 +1,16 @@
+name: Test Workflow
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build test image from compose.test.yaml
+      run: docker compose -f compose.test.yaml up --build --abort-on-container-exit --exit-code-from online-game-store-backend

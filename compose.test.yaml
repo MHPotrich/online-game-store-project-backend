@@ -1,0 +1,27 @@
+services:
+  data-base:
+    image: postgres:18.4-alpine
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: online-game-store-db
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d online-game-store-db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  online-game-store-backend:
+    build:
+      context: .
+      dockerfile: dockerfile.test
+    container_name: online-game-store-backend
+    depends_on:
+      data-base:
+        condition: service_healthy
+    ports:
+      - 8080:8080
