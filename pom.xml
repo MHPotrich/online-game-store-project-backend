@@ -13,6 +13,21 @@
           <release>21</release>
         </configuration>
       </plugin>
+      <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>4.1.0</version>
+          <executions>
+              <execution>
+                  <goals>
+                      <goal>repackage</goal>
+                  </goals>
+              </execution>
+          </executions>
+          <configuration>
+              <mainClass>mainPackage.Main</mainClass>
+          </configuration>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
